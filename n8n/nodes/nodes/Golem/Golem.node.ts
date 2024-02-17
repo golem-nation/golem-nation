@@ -162,14 +162,8 @@ export class Golem implements INodeType {
 				const container = this.getNodeParameter('container', itemIndex, '') as string;
 
 				console.log(commands.commandsValues);
-				// myString = this.getNodeParameter('myString', itemIndex, '') as string;
-
-				// item.json['myString'] = myString;
-				item.json['command'] = commands.commandsValues;
-
 				// GOLEM START
 
-				// const executor = await TaskExecutor.create("golem/alpine:latest");
 				const executor = await TaskExecutor.create(container);
 				try {
 					await executor.run(async (ctx) => {
@@ -178,12 +172,6 @@ export class Golem implements INodeType {
 								const result = (await ctx.run(commandObj.commandText)).stdout;
 								// @ts-ignore
 								item.json[commandObj.outputFieldName] = result;
-								//
-								// if(item.json['commandOutputs']) {
-								// 	item.json['commandOutputs'].push(result)
-								// }  else {
-								// 	item.json['commandOutputs'] = [result]
-								// }
 							}
 
 							if (commandObj.command === 'uploadFile') {

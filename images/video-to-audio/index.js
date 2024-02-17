@@ -6,7 +6,7 @@ import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 
 
 dotenv.config();
-ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 const videosDir = './videos';
 const audiosDir = './audios';

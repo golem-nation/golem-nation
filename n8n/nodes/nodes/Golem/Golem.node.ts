@@ -7,14 +7,19 @@ import {
 } from 'n8n-workflow';
 import { TaskExecutor } from '@golem-sdk/golem-js';
 import * as fs from 'fs';
+import { extensionToMimetypeMap } from './extensionToMimetypeMap';
 
 const downloadFile = async (ctx: any, filePath: string) => {
 	const splitFilePath = filePath.split('/');
 	const fileName = splitFilePath[splitFilePath.length - 1];
+	const extension = fileName.split('.')[1];
+	//@ts-ignore
+	const mimeType = extensionToMimetypeMap[extension];
+	const fileType = mimeType.split('/')[0];
 	const currentDirectory = process.cwd();
 	await ctx.downloadFile(filePath, fileName);
 	const file = fs.readFileSync(`${currentDirectory}/${fileName}`);
-	return file;
+	return { file, mimeType, fileType, extension };
 };
 
 const uploadFile = async (ctx: any, file: any) => {
@@ -127,28 +132,6 @@ export class Golem implements INodeType {
 									},
 								},
 							},
-							{
-								displayName: 'Mimetype of File',
-								name: 'mimeType',
-								type: 'string',
-								default: '', // The initially selected option
-								displayOptions: {
-									show: {
-										command: ['downloadFile'],
-									},
-								},
-							},
-							{
-								displayName: 'Filetype of File',
-								name: 'fileType',
-								type: 'string',
-								default: '', // The initially selected option
-								displayOptions: {
-									show: {
-										command: ['downloadFile'],
-									},
-								},
-							},
 						],
 					},
 				],
@@ -198,19 +181,23 @@ export class Golem implements INodeType {
 
 							if (commandObj.command === 'downloadFile') {
 								//@ts-ignore
-								const file = await downloadFile(ctx, commandObj.filePath, fileName);
+								const { file, fileType, extension, mimeType } = await downloadFile(
+									ctx,
+									// @ts-ignore
+									commandObj.filePath,
+									// @ts-ignore
+									fileName,
+								);
 								//@ts-ignore
 								const outputFieldName = commandObj.outputFieldName;
 
 								item.binary = {
 									...(item.binary || {}),
 									[outputFieldName]: {
-										//@ts-ignore
-										mimeType: commandObj.mimeType,
+										mimeType: mimeType,
 										data: file.toString('base64'),
-										//@ts-ignore
-										fileType: commandObj.fileType,
-										fileName: 'superFile.csv',
+										fileType: fileType,
+										fileName: `${outputFieldName}.${extension}`,
 									},
 								};
 							}

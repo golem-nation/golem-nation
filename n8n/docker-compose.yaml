@@ -1,3 +1,5 @@
+volumes:
+  n8n_data:
 services:
   app:
     build:
@@ -6,4 +8,6 @@ services:
         PRIVATE_KEY: 5daec338467100c8ce29f3d3f6375eab09d6667dbab9db1539cd270866424812
     ports:
       - 127.0.0.1:5678:5678
-
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - /local-files:/files

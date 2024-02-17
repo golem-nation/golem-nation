@@ -1,1 +1,5 @@
-RUN npm install && npm run start
+WORKDIR /golem/work
+COPY . .
+RUN npm install
+VOLUME /golem/work/audios
+VOLUME /golem/work/videos

@@ -31,7 +31,8 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/Golem/Golem.node.js"
+      "dist/nodes/Golem/Golem.node.js",
+      "dist/nodes/VideoToAudioGolem/VideoToAudioGolem.node.js"
     ]
   },
   "devDependencies": {

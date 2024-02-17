@@ -15,7 +15,7 @@ RUN echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.profile
 ENV PATH="$HOME/.local/bin:$PATH"
 
 WORKDIR /home/yagna/keyToJson
-RUN npm install && npm run keyToJson -- "${PRIVATE_KEY}" asd
+RUN npm install && npm run keyToJson -- ${PRIVATE_KEY} asd
 
 WORKDIR /home/yagna
 RUN cp "./keyToJson/key.json" "./key.json"
@@ -27,6 +27,8 @@ RUN npm link
 
 WORKDIR /root/.n8n/custom
 RUN npm link n8n-nodes-golem
+
+WORKDIR /home/yagna
 
 RUN chmod 755 /home/yagna/entrypoint.sh
 ENTRYPOINT ["/home/yagna/entrypoint.sh"]

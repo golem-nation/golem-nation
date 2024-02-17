@@ -196,7 +196,6 @@ export class Golem implements INodeType {
 								const filePath = commandObj.filePath;
 								const splitFilePath = filePath.split('/');
 								const fileName = splitFilePath[splitFilePath.length - 1];
-								await ctx.run('cp /golem/work/File.csv /golem/output/File.csv');
 								await ctx.downloadFile(filePath, fileName);
 								const file = fs.readFileSync(`${currentDirectory}/${fileName}`);
 								//@ts-ignore

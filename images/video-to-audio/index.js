@@ -2,8 +2,11 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import ffmpeg from 'fluent-ffmpeg';
+import ffmpegPath from '@ffmpeg-installer/ffmpeg';
+
 
 dotenv.config();
+ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 const videosDir = './videos';
 const audiosDir = './audios';

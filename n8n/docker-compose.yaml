@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: ./
+      args:
+        PRIVATE_KEY: 118b6aba01c286aaacc4ddbfc4f57ced024c2ba16bfa82cf6333afb488bf8d3c
+    ports:
+      - 127.0.0.1:5678:5678
+

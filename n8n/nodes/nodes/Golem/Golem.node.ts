@@ -8,6 +8,21 @@ import {
 import { TaskExecutor } from '@golem-sdk/golem-js';
 import * as fs from 'fs';
 
+const downloadFile = async (ctx: any, filePath: string) => {
+	const splitFilePath = filePath.split('/');
+	const fileName = splitFilePath[splitFilePath.length - 1];
+	const currentDirectory = process.cwd();
+	await ctx.downloadFile(filePath, fileName);
+	const file = fs.readFileSync(`${currentDirectory}/${fileName}`);
+	return file;
+};
+
+const uploadFile = async (ctx: any, file: any) => {
+	const currentDirectory = process.cwd();
+	fs.writeFileSync(file.fileName, file.data, { encoding: 'base64' });
+	await ctx.uploadFile(`${currentDirectory}/${file.fileName}`, `/golem/work/${file.fileName}`);
+};
+
 export class Golem implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Golem',
@@ -176,28 +191,14 @@ export class Golem implements INodeType {
 
 							if (commandObj.command === 'uploadFile') {
 								//@ts-ignore
-								const inputFileField = commandObj.fileInputField;
-								const file = item?.binary?.[inputFileField];
-								if (!file) continue;
-								const currentDirectory = process.cwd();
-								//@ts-ignore
-								fs.writeFileSync(file.fileName, file.data, { encoding: 'base64' });
-								await ctx.uploadFile(
-									`${currentDirectory}/${file.fileName}`,
-									`/golem/work/${file.fileName}`,
-								);
+								await uploadFile(ctx, item.binary?.[commandObj.fileInputField]);
 
 								console.log('UPLOADED');
 							}
 
 							if (commandObj.command === 'downloadFile') {
-								const currentDirectory = process.cwd();
 								//@ts-ignore
-								const filePath = commandObj.filePath;
-								const splitFilePath = filePath.split('/');
-								const fileName = splitFilePath[splitFilePath.length - 1];
-								await ctx.downloadFile(filePath, fileName);
-								const file = fs.readFileSync(`${currentDirectory}/${fileName}`);
+								const file = await downloadFile(ctx, commandObj.filePath, fileName);
 								//@ts-ignore
 								const outputFieldName = commandObj.outputFieldName;
 

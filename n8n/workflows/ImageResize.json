@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a7263cbbf3cb3c8254741ed16afaee1d223952661b8f34e6b3905fc2680485db"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1caNktgQcMm9m6rzcliwZHy-EZXX9Jp-i",
+          "mode": "list",
+          "cachedResultName": "ImageResizeInput",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1caNktgQcMm9m6rzcliwZHy-EZXX9Jp-i"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "a400680c-460e-464e-b832-2dba5a7d5e51",
+      "name": "Google Drive Trigger",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "WQfCghFR0arP2NJ5",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "5713a8e7-7000-4d41-9596-9cf2cc24a9cf",
+      "name": "Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        680,
+        460
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "WQfCghFR0arP2NJ5",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxWidth": 128
+      },
+      "id": "55ed1a64-7579-4bc4-a813-ee4cc448b410",
+      "name": "Image Resize with Golem",
+      "type": "CUSTOM.imageResizeGolem",
+      "typeVersion": 1,
+      "position": [
+        860,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "resizedFile",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "id": "c243959f-36ec-4104-9d42-79f86c2ad367",
+      "name": "Google Drive1",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        500
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "WQfCghFR0arP2NJ5",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Image Resize with Golem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Resize with Golem": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

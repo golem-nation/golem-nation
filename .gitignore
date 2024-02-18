@@ -2,3 +2,5 @@ node_modules/
 .npm
 .env
 .env.test
+n8n/files/*
+.vscode/

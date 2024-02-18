@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d5d843536b4f327c519e51569f73c0cd93dfc0593aa99fe07a404b9d5dbb8874"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1oXbKFsxj9qkbAVqh-xihIZpGrxeMZNPx",
+          "mode": "list",
+          "cachedResultName": "WhisperInput",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1oXbKFsxj9qkbAVqh-xihIZpGrxeMZNPx"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "507ba4de-ac2d-4193-9aa9-a6e2422830a5",
+      "name": "Google Drive Trigger",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        660
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "z1mjxKiw1HvXGHZU",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "cc88a6ab-fa99-4f42-81a5-31cad44c32a9",
+      "name": "Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -60,
+        660
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "z1mjxKiw1HvXGHZU",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "3779eac7-b13b-4498-bc3c-3471d7d0d912",
+      "name": "Create subtitles from video with Golem and Whisper",
+      "type": "CUSTOM.whisperGolem",
+      "typeVersion": 1,
+      "position": [
+        160,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "subtitles",
+        "name": "subtitles.json",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1EBqVEnpzqUe7Zvn2rz_JQJt5Kg0qIuXv",
+          "mode": "list",
+          "cachedResultName": "WhisperOutput",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1EBqVEnpzqUe7Zvn2rz_JQJt5Kg0qIuXv"
+        },
+        "options": {}
+      },
+      "id": "3180491d-91c8-4540-8459-0e4079bc7698",
+      "name": "Google Drive1",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        620,
+        880
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "z1mjxKiw1HvXGHZU",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "binaryPropertyName": "subtitles",
+        "options": {}
+      },
+      "id": "15bf43fa-ac46-445d-99af-e106e8c33de5",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1,
+      "position": [
+        620,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "include": "selected",
+        "includeFields": "subtitles",
+        "options": {}
+      },
+      "id": "670a8b10-73a8-4e09-959c-6128591a92c7",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        400,
+        660
+      ]
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Create subtitles from video with Golem and Whisper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create subtitles from video with Golem and Whisper": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

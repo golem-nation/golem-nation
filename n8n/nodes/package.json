@@ -33,7 +33,8 @@
     "nodes": [
       "dist/nodes/Golem/Golem.node.js",
       "dist/nodes/VideoToAudioGolem/VideoToAudioGolem.node.js",
-      "dist/nodes/ImageResize/ImageResize.node.js"
+      "dist/nodes/ImageResize/ImageResize.node.js",
+      "dist/nodes/WhisperGolem/WhisperGolem.node.js"
     ]
   },
   "devDependencies": {

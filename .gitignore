@@ -4,3 +4,4 @@ node_modules/
 .env.test
 n8n/files/*
 .vscode/
+images/image-resize/.idea/

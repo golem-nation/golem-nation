@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a8a6ad519b8e03cf39d85da282bcd29781a42fd4e23558e4e6fec57c000d6f88"
+  },
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b9a068b4-3972-4004-a234-247eaac55036",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [460, 460]
+    },
+    {
+      "parameters": {},
+      "id": "34ba13df-d8cd-49fb-bae8-2c732acf0be8",
+      "name": "Silence Remover with Golem",
+      "type": "CUSTOM.silenceRemoverGolem",
+      "typeVersion": 1,
+      "position": [900, 480]
+    },
+    {
+      "parameters": {
+        "fileSelector": "/files/input/*",
+        "options": {}
+      },
+      "id": "7493f157-72c3-41db-ad8a-008a945d1ce5",
+      "name": "Read Input Files from Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [680, 460]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/files/output/result.mp4",
+        "options": {
+          "append": false
+        }
+      },
+      "id": "10397aa9-56ba-4a8a-87ab-346cd6b4f356",
+      "name": "Write result Files to  Disk",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [1120, 480]
+    }
+  ],
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Read Input Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Silence Remover with Golem": {
+      "main": [
+        [
+          {
+            "node": "Write result Files to  Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Input Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Silence Remover with Golem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}

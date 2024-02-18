@@ -9,4 +9,4 @@ RUN apt-get update && \
 VOLUME /golem/work/input
 VOLUME /golem/work/output
 
-CMD ["python", "main.py", "--input", "input", "--output", "output", "--ss", "100", "--thread", "5"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
